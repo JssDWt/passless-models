@@ -5,7 +5,7 @@ def readme():
         return f.read()
 
 setup(
-    name='passless',
+    name='passless_models',
     version='0.0.1',
     install_requires=['jsonpickle', 'python-dateutil'],
     description='Models for Passless infrastructure.',
@@ -13,5 +13,5 @@ setup(
     author='Jesse de Wit',
     author_email='witdejesse@hotmail.com',
     license='GPLv3',
-    packages= ['passless']
+    packages= ['passless_models']
 )

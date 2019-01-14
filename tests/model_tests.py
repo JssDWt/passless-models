@@ -1,5 +1,5 @@
 from unittest import TestCase
-from passless import models
+from passless_models import Receipt
 from datetime import datetime
 from dateutil.tz import tzoffset
 from decimal import Decimal
@@ -91,7 +91,7 @@ class ReceiptTests(TestCase):
             "loyalties": []
             }"""
 
-        instance = models.Receipt.from_json(receipt_json)
+        instance = Receipt.from_json(receipt_json)
         self.assertEqual(instance.time, datetime(2018,11,26,13,43,00,0,tzinfo=tzoffset("UTC+1",60*60)))
         self.assertEqual(instance.currency, "EUR")
         self.assertEqual(instance.subTotal.withoutTax, 39)
