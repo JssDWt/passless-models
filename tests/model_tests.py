@@ -3,12 +3,42 @@ from passless_models import Receipt
 from datetime import datetime
 from dateutil.tz import tzoffset
 from decimal import Decimal
+import json
 
-class ReceiptTests(TestCase):
-    def test_receipt_deserialization(self):
-        receipt_json = """{
-            "time": "2018-11-26T13:43:00+01:00",
-            "currency": "EUR",
+TEST_RECEIPT = """{
+    "time": "2018-11-26T13:43:00+01:00",
+    "currency": "EUR",
+    "subTotal": {
+        "withoutTax": 39,
+        "withTax": 39,
+        "tax": 0
+    },
+    "totalDiscount": {
+        "withoutTax": 0,
+        "withTax": 0,
+        "tax": 0
+    },
+    "totalPrice": {
+        "withoutTax": 39,
+        "withTax": 39,
+        "tax": 0
+    },
+    "totalFee": {
+        "withoutTax": 0,
+        "withTax": 0,
+        "tax": 0
+    },
+    "totalPaid": 39,
+    "items": [
+        {
+            "name": "SCL3711 NFC reader/writer",
+            "quantity": 1.00,
+            "unit": "pc",
+            "unitPrice": {
+                "withoutTax": 39,
+                "withTax": 39,
+                "tax": 0
+            },
             "subTotal": {
                 "withoutTax": 39,
                 "withTax": 39,
@@ -24,74 +54,45 @@ class ReceiptTests(TestCase):
                 "withTax": 39,
                 "tax": 0
             },
-            "totalFee": {
-                "withoutTax": 0,
-                "withTax": 0,
-                "tax": 0
+            "taxClass": {
+                "name": "Zero rate",
+                "fraction": 0
             },
-            "totalPaid": 39,
-            "items": [
-                {
-                    "name": "SCL3711 NFC reader/writer",
-                    "quantity": 1.00,
-                    "unit": "pc",
-                    "unitPrice": {
-                        "withoutTax": 39,
-                        "withTax": 39,
-                        "tax": 0
-                    },
-                    "subTotal": {
-                        "withoutTax": 39,
-                        "withTax": 39,
-                        "tax": 0
-                    },
-                    "totalDiscount": {
-                        "withoutTax": 0,
-                        "withTax": 0,
-                        "tax": 0
-                    },
-                    "totalPrice": {
-                        "withoutTax": 39,
-                        "withTax": 39,
-                        "tax": 0
-                    },
-                    "taxClass": {
-                        "name": "Zero rate",
-                        "fraction": 0
-                    },
-                    "shortDescription": "Compact and capable usb rfid reader/writer",
-                    "description": "With its functional solid mechanical design that has no removable parts that you may loose, SCL3711 is perfect for mobile uses. Also, it supports NFC peer-to-peer protocol.",
-                    "brand": "Identive",
-                    "discounts": []
-                }
-            ],
-            "payments": [
-                {
-                    "method": "card",
-                    "amount": 39,
-                    "meta": {
-                        "type": "Maestro",
-                        "cardNumber": "1234 5678 1234 5678",
-                        "expiration": "2023-10-28T00:00:00Z"
-                    }
-                }
-            ],
-            "vendor": {
-                "name": "NFC store",
-                "address": "Techniekweg 42, 1234AA, Utrecht",
-                "phone": "030-42424242",
-                "vatNumber": "NL424242424B42",
-                "kvkNumber": "42424242",
-                "email": "info@nfcstore.com",
-                "web": "https://www.nfcstore.io/",
-                "meta": {}
-            },
-            "vendorReference": "20181126-000316",
-            "fees": [],
-            "loyalties": []
-            }"""
-
-        instance = Receipt.from_json(receipt_json)
+            "shortDescription": "Compact and capable usb rfid reader/writer",
+            "description": "With its functional solid mechanical design that has no removable parts that you may loose, SCL3711 is perfect for mobile uses. Also, it supports NFC peer-to-peer protocol.",
+            "brand": "Identive",
+            "discounts": []
+        }
+    ],
+    "payments": [
+        {
+            "method": "card",
+            "amount": 39,
+            "meta": {
+                "type": "Maestro",
+                "cardNumber": "1234 5678 1234 5678",
+                "expiration": "2023-10-28T00:00:00Z"
+            }
+        }
+    ],
+    "vendor": {
+        "name": "NFC store",
+        "address": "Techniekweg 42, 1234AA, Utrecht",
+        "phone": "030-42424242",
+        "vatNumber": "NL424242424B42",
+        "kvkNumber": "42424242",
+        "email": "info@nfcstore.com",
+        "web": "https://www.nfcstore.io/",
+        "logo": null,
+        "meta": {}
+    },
+    "vendorReference": "20181126-000316",
+    "fees": [],
+    "loyalties": []
+    }"""
+class ReceiptTests(TestCase):
+    def test_receipt_deserialization(self):
+        instance = Receipt.from_json(TEST_RECEIPT)
         self.assertEqual(instance.time, datetime(2018,11,26,13,43,00,0,tzinfo=tzoffset("UTC+1",60*60)))
         self.assertEqual(instance.currency, "EUR")
         self.assertEqual(instance.subTotal.withoutTax, 39)
@@ -151,4 +152,10 @@ class ReceiptTests(TestCase):
         self.assertEqual(len(instance.fees), 0)
         self.assertIsInstance(instance.loyalties, list)
         self.assertEqual(len(instance.loyalties), 0)
-        
+    
+    def test_round_trip(self):
+        loaded = json.loads(TEST_RECEIPT)
+        expected = json.dumps(loaded, sort_keys=True)
+        receipt = Receipt.from_json(TEST_RECEIPT)
+        actual = receipt.to_json()
+        self.assertEqual(expected, actual)

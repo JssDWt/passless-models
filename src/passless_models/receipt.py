@@ -11,6 +11,14 @@ from .vendor import Vendor
 from .fee import Fee
 from .loyalty import Loyalty
 
+class DatetimeHandler(jsonpickle.handlers.BaseHandler):
+    def flatten(self, obj, data):
+        return obj.isoformat()
+
+jsonpickle.handlers.registry.register(datetime, DatetimeHandler)
+jsonpickle.set_preferred_backend('json')
+jsonpickle.set_encoder_options('json')
+
 class Receipt():
     # TODO: add totalChange?
     # TODO: Add cashier?
@@ -54,8 +62,7 @@ class Receipt():
     def to_json(self):
         # type: () -> str
         return jsonpickle.encode(self, unpicklable=False)
-        # return json.dumps(self, default=lambda o: o.__dict__, 
-        #     sort_keys=True, indent=4)
+        # return json.dumps(self, default=default_converter, sort_keys=True)
 
     @classmethod
     def from_json(cls, json_str):
