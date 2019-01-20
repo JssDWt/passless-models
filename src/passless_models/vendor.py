@@ -1,4 +1,6 @@
-class Vendor():
+from .jsonable import Jsonable
+
+class Vendor(Jsonable):
     # TODO: Include difference between company and shop
     # TODO: Validate logo, find a decent logo format
     # TODO: Change kvkNumber to 'company registry'
@@ -35,10 +37,7 @@ class Vendor():
         self.email = email
         self.web = web
         self.meta = meta
-    
-    def jsonify(self):
-        return self.__dict__
-        
+
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Vendor

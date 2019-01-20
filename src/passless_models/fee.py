@@ -1,7 +1,8 @@
 from .price import Price
 from .tax_class import TaxClass
+from .jsonable import Jsonable
 
-class Fee():
+class Fee(Jsonable):
     def __init__(self,
                  name,    # type: str
                  price,   # type: Price
@@ -15,10 +16,7 @@ class Fee():
         self.name = name
         self.price = price
         self.taxClass = taxClass
-    
-    def jsonify(self):
-        return self.__dict__
-        
+
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Fee

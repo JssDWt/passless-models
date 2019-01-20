@@ -1,6 +1,7 @@
 from decimal import Decimal
+from .jsonable import Jsonable
 
-class TaxClass():
+class TaxClass(Jsonable):
     def __init__(self,
                  name,     # type: str
                  fraction, # type: Decimal
@@ -10,10 +11,7 @@ class TaxClass():
         assert fraction <= 1 and fraction >= 0, "fraction should be between 0 and 1"
         self.name = name
         self.fraction = fraction
-    
-    def jsonify(self):
-        return self.__dict__
-        
+
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> TaxClass

@@ -1,6 +1,7 @@
 from decimal import Decimal
+from .jsonable import Jsonable
 
-class Price():
+class Price(Jsonable):
     def __init__(self,
                  withoutTax, # type: Decimal
                  withTax,    # type: Decimal
@@ -13,10 +14,7 @@ class Price():
         self.withoutTax = withoutTax
         self.withTax = withTax
         self.tax = tax
-    
-    def jsonify(self):
-        return self.__dict__
-        
+
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Price

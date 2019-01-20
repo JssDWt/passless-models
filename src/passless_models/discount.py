@@ -1,6 +1,7 @@
 from .price import Price
+from .jsonable import Jsonable
 
-class Discount():
+class Discount(Jsonable):
     # TODO: Add description
     def __init__(self,
                  name,     # type: str
@@ -10,10 +11,7 @@ class Discount():
         assert isinstance(deduct, Price), "parameter should be Price type"
         self.name = name
         self.deduct = deduct
-    
-    def jsonify(self):
-        return self.__dict__
-        
+
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Discount

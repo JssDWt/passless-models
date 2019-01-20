@@ -2,8 +2,9 @@ from decimal import Decimal
 from .price import Price
 from .tax_class import TaxClass
 from .discount import Discount
+from .jsonable import Jsonable
 
-class Item():
+class Item(Jsonable):
     # TODO: Change name to Orderline
     # TODO: Add images?
     def __init__(self,
@@ -61,10 +62,7 @@ class Item():
         self.description = description
         self.brand = brand
         self.discounts = discounts
-    
-    def jsonify(self):
-        return self.__dict__
-        
+
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Item

@@ -1,8 +1,9 @@
 from decimal import Decimal
 from datetime import datetime
 import dateutil.parser
+from .jsonable import Jsonable
 
-class Loyalty():
+class Loyalty(Jsonable):
     def __init__(self,
                  points,         # type: Decimal
                  validUntil=None # type: datetime
@@ -13,9 +14,6 @@ class Loyalty():
         self.points = points
         self.validUntil = validUntil
 
-    def jsonify(self):
-        return self.__dict__
-        
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Loyalty

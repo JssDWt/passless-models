@@ -9,17 +9,18 @@ from .payment import Payment
 from .vendor import Vendor
 from .fee import Fee
 from .loyalty import Loyalty
+from .jsonable import Jsonable
 
 def default_ser(obj):
-    if hasattr(obj, 'jsonify'):
-        return obj.jsonify()
+    if hasattr(obj, 'jsonable'):
+        return obj.jsonable()
     elif isinstance(obj, datetime):
         return obj.isoformat()
     else:
         return simplejson.dumps(obj, 
             sort_keys=True)
 
-class Receipt():
+class Receipt(Jsonable):
     # TODO: add totalChange?
     # TODO: Add cashier?
     # TODO: Make totalDiscount and totalFee optional?
@@ -87,9 +88,6 @@ class Receipt():
     def to_json(self):
         # type: () -> str
         return simplejson.dumps(self, sort_keys=True, default=default_ser)
-
-    def jsonify(self):
-        return self.__dict__
 
     @classmethod
     def from_json(cls, json_str):

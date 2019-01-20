@@ -1,6 +1,7 @@
 from decimal import Decimal
+from .jsonable import Jsonable
 
-class Payment():
+class Payment(Jsonable):
     # TODO: Add different kinds of payment?
     def __init__(self,
                  method,   # type: str
@@ -14,10 +15,7 @@ class Payment():
         self.method = method
         self.amount = amount
         self.meta = meta
-    
-    def jsonify(self):
-        return self.__dict__
-        
+
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Payment
