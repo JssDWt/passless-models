@@ -16,6 +16,9 @@ class Fee():
         self.price = price
         self.taxClass = taxClass
     
+    def jsonify(self):
+        return self.__dict__
+        
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Fee

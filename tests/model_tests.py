@@ -32,7 +32,7 @@ TEST_RECEIPT = """{
     "items": [
         {
             "name": "SCL3711 NFC reader/writer",
-            "quantity": 1.00,
+            "quantity": 1.0,
             "unit": "pc",
             "unitPrice": {
                 "withoutTax": 100,

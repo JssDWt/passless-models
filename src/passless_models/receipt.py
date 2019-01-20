@@ -1,7 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
 import dateutil.parser
-import jsonpickle
 import simplejson 
 
 from .price import Price
@@ -24,6 +23,15 @@ jsonpickle.handlers.registry.register(datetime, DatetimeHandler)
 jsonpickle.set_preferred_backend('simplejson')
 jsonpickle.set_decoder_options('simplejson', use_decimal=True)
 jsonpickle.set_encoder_options('simplejson', use_decimal=True, sort_keys=True)
+
+def default_ser(obj):
+    if hasattr(obj, 'jsonify'):
+        return obj.jsonify()
+    elif isinstance(obj, datetime):
+        return obj.isoformat()
+    else:
+        return simplejson.dumps(obj, 
+            sort_keys=True)
 
 class Receipt():
     # TODO: add totalChange?
@@ -92,14 +100,15 @@ class Receipt():
 
     def to_json(self):
         # type: () -> str
-        # return simplejson.dumps(self, sort_keys=True)
-        return jsonpickle.encode(self, unpicklable=False)
-        # return json.dumps(self, default=default_converter, sort_keys=True)
+        return simplejson.dumps(self, sort_keys=True, default=default_ser)
+
+    def jsonify(self):
+        return self.__dict__
 
     @classmethod
     def from_json(cls, json_str):
         # type: (str) -> Receipt
-        json_dict = jsonpickle.decode(json_str)
+        json_dict = simplejson.loads(json_str, use_decimal=True)
         return cls.from_json_dict(json_dict)
     
     @classmethod

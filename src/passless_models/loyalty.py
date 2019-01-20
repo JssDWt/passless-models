@@ -13,6 +13,9 @@ class Loyalty():
         self.points = points
         self.validUntil = validUntil
 
+    def jsonify(self):
+        return self.__dict__
+        
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Loyalty

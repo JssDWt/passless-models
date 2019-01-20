@@ -14,6 +14,9 @@ class Price():
         self.withTax = withTax
         self.tax = tax
     
+    def jsonify(self):
+        return self.__dict__
+        
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Price

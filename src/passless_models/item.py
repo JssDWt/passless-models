@@ -62,6 +62,9 @@ class Item():
         self.brand = brand
         self.discounts = discounts
     
+    def jsonify(self):
+        return self.__dict__
+        
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Item

@@ -36,6 +36,9 @@ class Vendor():
         self.web = web
         self.meta = meta
     
+    def jsonify(self):
+        return self.__dict__
+        
     @classmethod
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Vendor
