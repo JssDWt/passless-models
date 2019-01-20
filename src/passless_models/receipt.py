@@ -10,20 +10,6 @@ from .vendor import Vendor
 from .fee import Fee
 from .loyalty import Loyalty
 
-class DatetimeHandler(jsonpickle.handlers.BaseHandler):
-    def flatten(self, obj, data):
-        return obj.isoformat()
-
-# class DecimalHandler(jsonpickle.handlers.BaseHandler):
-#     def flatten(self, obj, data):
-#         return str(obj)
-
-jsonpickle.handlers.registry.register(datetime, DatetimeHandler)
-# jsonpickle.handlers.registry.register(Decimal, DecimalHandler)
-jsonpickle.set_preferred_backend('simplejson')
-jsonpickle.set_decoder_options('simplejson', use_decimal=True)
-jsonpickle.set_encoder_options('simplejson', use_decimal=True, sort_keys=True)
-
 def default_ser(obj):
     if hasattr(obj, 'jsonify'):
         return obj.jsonify()
