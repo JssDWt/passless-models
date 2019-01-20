@@ -7,7 +7,11 @@ class Fee():
                  price,   # type: Price
                  taxClass # type: TaxClass
                  ):
-        assert price.tax == price.withoutTax * taxClass.fraction, "Tax price not equal to tax rate"
+        assert isinstance(name, str), "parameter should be str type"
+        assert isinstance(price, Price), "parameter should be Price type"
+        assert isinstance(taxClass, TaxClass), "parameter should be TaxClass type"
+        assert price.tax == price.withoutTax * taxClass.fraction, (
+            "Tax price not equal to tax rate")
         self.name = name
         self.price = price
         self.taxClass = taxClass
@@ -16,7 +20,8 @@ class Fee():
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Fee
 
-        result = cls(**json_dict)
-        result.price = Price.from_json_dict(json_dict['price'])
-        result.taxClass = TaxClass.from_json_dict(json_dict['taxClass'])
-        return result
+        return cls(
+            name=json_dict['name'],
+            price=Price.from_json_dict(json_dict['price']),
+            taxClass=TaxClass.from_json_dict(json_dict['taxClass'])
+        )

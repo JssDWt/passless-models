@@ -7,6 +7,9 @@ class Loyalty():
                  points,         # type: Decimal
                  validUntil=None # type: datetime
                  ):
+        assert isinstance(points, (Decimal, int)), "parameter should be Decimal type"
+        if validUntil is not None:
+            assert isinstance(validUntil, datetime), "parameter should be datetime type"
         self.points = points
         self.validUntil = validUntil
 
@@ -14,6 +17,7 @@ class Loyalty():
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Loyalty
 
-        result = cls(**json_dict) 
-        result.validUntil = dateutil.parser.parse(json_dict['validUntil'])
-        return result
+        return cls(
+            points=json_dict['points'],
+            validUntil=dateutil.parser.parse(json_dict['validUntil'])
+        )

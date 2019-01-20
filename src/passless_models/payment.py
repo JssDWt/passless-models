@@ -7,6 +7,10 @@ class Payment():
                  amount,   # type: Decimal
                  meta=None # type: dict
                  ):
+        assert isinstance(method, str), "parameter should be str type"
+        assert isinstance(amount, (Decimal, int)), "parameter should be Decimal type"
+        if meta is not None:
+            assert isinstance(meta, dict), "parameter should be dict type"
         self.method = method
         self.amount = amount
         self.meta = meta

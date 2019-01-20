@@ -6,6 +6,9 @@ class Price():
                  withTax,    # type: Decimal
                  tax         # type: Decimal
                  ):
+        assert isinstance(withoutTax, (Decimal, int)), "parameter should be Decimal type"
+        assert isinstance(withTax, (Decimal, int)), "parameter should be Decimal type"
+        assert isinstance(tax, (Decimal, int)), "parameter should be Decimal type"
         assert withoutTax + tax == withTax, "tax does not add up."
         self.withoutTax = withoutTax
         self.withTax = withTax

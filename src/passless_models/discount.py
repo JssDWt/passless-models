@@ -6,6 +6,8 @@ class Discount():
                  name,     # type: str
                  deduct    # type: Price
                  ):
+        assert isinstance(name, str), "parameter should be str type"
+        assert isinstance(deduct, Price), "parameter should be Price type"
         self.name = name
         self.deduct = deduct
     
@@ -13,6 +15,7 @@ class Discount():
     def from_json_dict(cls, json_dict):
         # type: (dict) -> Discount
 
-        result = cls(**json_dict) 
-        result.deduct = Price.from_json_dict(json_dict['deduct'])
-        return result
+        return cls(
+            name=json_dict['name'],
+            deduct=Price.from_json_dict(json_dict['deduct'])
+        )

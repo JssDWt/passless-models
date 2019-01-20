@@ -13,6 +13,19 @@ class Vendor():
                  web=None,  # type: str
                  meta=None, # type: dict
                  ):
+        assert isinstance(name, str), "parameter should be str type"
+        assert isinstance(address, str), "parameter should be str type"
+        assert isinstance(phone, str), "parameter should be str type"
+        assert isinstance(vatNumber, str), "parameter should be str type"
+        assert isinstance(kvkNumber, str), "parameter should be str type"
+        if logo is not None:
+            assert isinstance(logo, str), "parameter should be str type"
+        if email is not None:
+            assert isinstance(email, str), "parameter should be str type"
+        if web is not None:
+            assert isinstance(web, str), "parameter should be str type"
+        if meta is not None:
+            assert isinstance(meta, dict), "parameter should be dict type"
         self.name = name
         self.address = address
         self.phone = phone
