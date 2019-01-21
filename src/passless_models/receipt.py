@@ -109,6 +109,6 @@ class Receipt(Jsonable):
             payments=list(map(Payment.from_json_dict, json_dict['payments'])),
             vendor=Vendor.from_json_dict(json_dict['vendor']),
             vendorReference=json_dict['vendorReference'],
-            fees=list(map(Fee.from_json_dict, json_dict.get('fees', []))),
-            loyalties=list(map(Loyalty.from_json_dict, json_dict.get('loyalties', [])))
+            fees=list(map(Fee.from_json_dict, json_dict.get('fees') or [])),
+            loyalties=list(map(Loyalty.from_json_dict, json_dict.get('loyalties') or []))
         )

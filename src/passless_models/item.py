@@ -79,5 +79,5 @@ class Item(Jsonable):
             shortDescription=json_dict.get('shortDescription', None),
             description=json_dict.get('description', None),
             brand=json_dict.get('brand', None),
-            discounts=list(map(Discount.from_json_dict, json_dict.get('discounts', [])))
+            discounts=list(map(Discount.from_json_dict, json_dict.get('discounts') or []))
         )
