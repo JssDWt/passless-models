@@ -11,7 +11,7 @@ def readme():
         return f.read()
 
 setup(
-    name='passless_models',
+    name='passless-models',
     version='0.0.3',
     description='Models for Passless infrastructure.',
     long_description=readme(),
