@@ -47,7 +47,9 @@ class Item(Jsonable):
             "unitPrice * quantity != subtotal")
         assert unitPrice.withTax * quantity == subtotal.withTax, (
             "unitPrice * quantity != subtotal")
-        assert unitPrice.tax == unitPrice.withoutTax * taxClass.fraction, (
+        
+        # TODO: Is the quantize function appropriate for this assertion?
+        assert unitPrice.tax == (unitPrice.withoutTax * taxClass.fraction).quantize(unitPrice.tax), (
             "Tax price not equal to tax rate")
 
         self.name = name
