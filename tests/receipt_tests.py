@@ -1,98 +1,104 @@
 from unittest import TestCase
-from passless_models import Receipt
+from passless_models import Receipt, Wrapper
 from datetime import datetime
 from dateutil.tz import tzoffset
 from decimal import Decimal
 import json
 
-TEST_RECEIPT = """{
-    "time": "2018-11-26T13:43:00+01:00",
-    "currency": "EUR",
-    "subtotal": {
-        "withoutTax": 100,
-        "withTax": 121.0,
-        "tax": 21.0
-    },
-    "totalDiscount": {
-        "withoutTax": 0,
-        "withTax": 0,
-        "tax": 0
-    },
-    "totalPrice": {
-        "withoutTax": 100,
-        "withTax": 121.0,
-        "tax": 21.0
-    },
-    "totalFee": {
-        "withoutTax": 0,
-        "withTax": 0,
-        "tax": 0
-    },
-    "totalPaid": 121,
-    "items": [
-        {
-            "name": "SCL3711 NFC reader/writer",
-            "quantity": 1.0,
-            "unit": "pc",
-            "unitPrice": {
-                "withoutTax": 100,
-                "withTax": 121.0,
-                "tax": 21.0
-            },
-            "subtotal": {
-                "withoutTax": 100,
-                "withTax": 121.0,
-                "tax": 21.0
-            },
-            "totalDiscount": {
-                "withoutTax": 0,
-                "withTax": 0,
-                "tax": 0
-            },
-            "totalPrice": {
-                "withoutTax": 100,
-                "withTax": 121.0,
-                "tax": 21.0
-            },
-            "taxClass": {
-                "name": "Full rate",
-                "fraction": 0.21
-            },
-            "shortDescription": "Compact and capable usb rfid reader/writer",
-            "description": "With its functional solid mechanical design that has no removable parts that you may loose, SCL3711 is perfect for mobile uses. Also, it supports NFC peer-to-peer protocol.",
-            "brand": "Identive",
-            "discounts": []
-        }
-    ],
-    "payments": [
-        {
-            "method": "card",
-            "amount": 121,
-            "meta": {
-                "type": "Maestro",
-                "cardNumber": "1234 5678 1234 5678",
-                "expiration": "2023-10-28T00:00:00Z"
+TEST_RECEIPT = """
+{
+    "version": "0.1.0",
+    "receipt": {
+        "time": "2018-11-26T13:43:00+01:00",
+        "currency": "EUR",
+        "subtotal": {
+            "withoutTax": 100,
+            "withTax": 121.0,
+            "tax": 21.0
+        },
+        "totalDiscount": {
+            "withoutTax": 0,
+            "withTax": 0,
+            "tax": 0
+        },
+        "totalPrice": {
+            "withoutTax": 100,
+            "withTax": 121.0,
+            "tax": 21.0
+        },
+        "totalFee": {
+            "withoutTax": 0,
+            "withTax": 0,
+            "tax": 0
+        },
+        "totalPaid": 121,
+        "items": [
+            {
+                "name": "SCL3711 NFC reader/writer",
+                "quantity": 1.0,
+                "unit": "pc",
+                "unitPrice": {
+                    "withoutTax": 100,
+                    "withTax": 121.0,
+                    "tax": 21.0
+                },
+                "subtotal": {
+                    "withoutTax": 100,
+                    "withTax": 121.0,
+                    "tax": 21.0
+                },
+                "totalDiscount": {
+                    "withoutTax": 0,
+                    "withTax": 0,
+                    "tax": 0
+                },
+                "totalPrice": {
+                    "withoutTax": 100,
+                    "withTax": 121.0,
+                    "tax": 21.0
+                },
+                "taxClass": {
+                    "name": "Full rate",
+                    "fraction": 0.21
+                },
+                "shortDescription": "Compact and capable usb rfid reader/writer",
+                "description": "With its functional solid mechanical design that has no removable parts that you may loose, SCL3711 is perfect for mobile uses. Also, it supports NFC peer-to-peer protocol.",
+                "brand": "Identive",
+                "discounts": []
             }
-        }
-    ],
-    "vendor": {
-        "name": "NFC store",
-        "address": "Techniekweg 42, 1234AA, Utrecht",
-        "phone": "030-42424242",
-        "vatNumber": "NL424242424B42",
-        "kvkNumber": "42424242",
-        "email": "info@nfcstore.com",
-        "web": "https://www.nfcstore.io/",
-        "logo": null,
-        "meta": {}
-    },
-    "vendorReference": "20181126-000316",
-    "fees": [],
-    "loyalties": []
-    }"""
+        ],
+        "payments": [
+            {
+                "method": "card",
+                "amount": 121,
+                "meta": {
+                    "type": "Maestro",
+                    "cardNumber": "1234 5678 1234 5678",
+                    "expiration": "2023-10-28T00:00:00Z"
+                }
+            }
+        ],
+        "vendor": {
+            "name": "NFC store",
+            "address": "Techniekweg 42, 1234AA, Utrecht",
+            "phone": "030-42424242",
+            "vatNumber": "NL424242424B42",
+            "kvkNumber": "42424242",
+            "email": "info@nfcstore.com",
+            "web": "https://www.nfcstore.io/",
+            "logo": null,
+            "meta": {}
+        },
+        "vendorReference": "20181126-000316",
+        "fees": [],
+        "loyalties": []
+    }
+}"""
 class ReceiptTests(TestCase):
     def test_receipt_deserialization(self):
-        instance = Receipt.from_json(TEST_RECEIPT)
+        wrapper = Wrapper.from_json(TEST_RECEIPT)
+        self.assertEqual(wrapper.version, "0.1.0")
+        instance = wrapper.receipt
         self.assertEqual(instance.time, datetime(2018,11,26,13,43,00,0,tzinfo=tzoffset("UTC+1",60*60)))
         self.assertEqual(instance.currency, "EUR")
         self.assertEqual(float(instance.subtotal.withoutTax), 100)
@@ -156,6 +162,6 @@ class ReceiptTests(TestCase):
     def test_round_trip(self):
         loaded = json.loads(TEST_RECEIPT)
         expected = json.dumps(loaded, sort_keys=True)
-        receipt = Receipt.from_json(TEST_RECEIPT)
-        actual = receipt.to_json()
+        wrapper = Wrapper.from_json(TEST_RECEIPT)
+        actual = wrapper.to_json()
         self.assertEqual(expected, actual)

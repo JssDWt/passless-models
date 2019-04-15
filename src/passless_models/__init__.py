@@ -14,3 +14,4 @@ from .price import Price
 from .receipt import Receipt
 from .tax_class import TaxClass
 from .vendor import Vendor
+from .wrapper import Wrapper
