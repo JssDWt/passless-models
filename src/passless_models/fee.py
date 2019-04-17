@@ -11,8 +11,8 @@ class Fee(Jsonable):
         assert isinstance(name, str), "parameter should be str type"
         assert isinstance(price, Price), "parameter should be Price type"
         assert isinstance(taxClass, TaxClass), "parameter should be TaxClass type"
-        assert price.tax == price.withoutTax * taxClass.fraction, (
-            "Tax price not equal to tax rate")
+        # assert price.tax == price.withoutTax * taxClass.fraction, (
+        #     "Tax price not equal to tax rate")
         self.name = name
         self.price = price
         self.taxClass = taxClass

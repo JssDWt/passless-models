@@ -10,7 +10,7 @@ class Price(Jsonable):
         assert isinstance(withoutTax, (Decimal, int)), "parameter should be Decimal type"
         assert isinstance(withTax, (Decimal, int)), "parameter should be Decimal type"
         assert isinstance(tax, (Decimal, int)), "parameter should be Decimal type"
-        assert withoutTax + tax == withTax, "tax does not add up."
+        # assert withoutTax + tax == withTax, "tax does not add up."
         self.withoutTax = withoutTax
         self.withTax = withTax
         self.tax = tax

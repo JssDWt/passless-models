@@ -39,12 +39,12 @@ class Item(Jsonable):
             assert isinstance(discounts, list), "parameter should be list type"
             assert all(isinstance(x, Discount) for x in discounts), (
                 "parameter should be a list of Discount objects.")
-        assert subtotal.withTax - totalDiscount.withTax == totalPrice.withTax, (
-            "subtotal - discount != total")
-        assert subtotal.withoutTax - totalDiscount.withoutTax == totalPrice.withoutTax, (
-            "subtotal - discount != total")
-        assert unitPrice.withoutTax * quantity == subtotal.withoutTax, (
-            "unitPrice * quantity != subtotal")
+        # assert subtotal.withTax - totalDiscount.withTax == totalPrice.withTax, (
+        #     "subtotal - discount != total")
+        # assert subtotal.withoutTax - totalDiscount.withoutTax == totalPrice.withoutTax, (
+        #     "subtotal - discount != total")
+        # assert unitPrice.withoutTax * quantity == subtotal.withoutTax, (
+        #     "unitPrice * quantity != subtotal")
         # TODO: Assert unitprice and subtotal with tax.
         # assert unitPrice.withTax * quantity == subtotal.withTax, (
         #     "unitPrice * quantity != subtotal")

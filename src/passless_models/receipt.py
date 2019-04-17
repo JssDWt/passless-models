@@ -55,10 +55,10 @@ class Receipt(Jsonable):
             assert isinstance(loyalties, list), "parameter should be list type"
             assert all(isinstance(x, Loyalty) for x in loyalties), (
                 "parameter should be a list of Loyalty objects.")
-        assert sum(map(lambda i: i.subtotal.withoutTax, items)) == subtotal.withoutTax, (
-            "items subtotal does not add up to subtotal")
-        assert sum(map(lambda p: p.amount, payments)) == totalPaid, (
-            "payments do not add up to totalPaid")
+        # assert sum(map(lambda i: i.subtotal.withoutTax, items)) == subtotal.withoutTax, (
+        #     "items subtotal does not add up to subtotal")
+        # assert sum(map(lambda p: p.amount, payments)) == totalPaid, (
+        #     "payments do not add up to totalPaid")
         # TODO: assert discounts add up
         # TODO: assert fees add up
         # TODO: assert totalPrice adds up
